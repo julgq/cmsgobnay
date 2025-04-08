@@ -1,0 +1,58 @@
+{% load static wagtailsettings_tags wagtailimages_tags %}
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}Mi Sitio{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  </head>
+  <body>
+    <header>
+      <div class="branding">
+        {# Se muestra el logo personalizado, si se ha configurado #}
+        {% if settings.home.SiteBrandingSettings.site_logo %}
+          {% image settings.home.SiteBrandingSettings.site_logo fill-200x100 %}
+        {% else %}
+          <h1>Mi Sitio</h1>
+        {% endif %}
+      </div>
+      
+      <nav class="main-menu">
+        {% block nav %}
+          {# Si se definió un menú personalizado en SiteBrandingSettings, se muestra; de lo contrario, se muestra uno por defecto #}
+          {% if settings.home.SiteBrandingSettings.menu_html %}
+            <div class="custom-menu">
+              {{ settings.home.SiteBrandingSettings.menu_html|safe }}
+            </div>
+          {% else %}
+            <ul>
+              <li><a href="/">Inicio</a></li>
+              <li><a href="/noticias/">Noticias</a></li>
+              <li><a href="/blog/">Blog</a></li>
+              <li><a href="/contacto/">Contacto</a></li>
+            </ul>
+          {% endif %}
+        {% endblock nav %}
+      </nav>
+    </header>
+
+    <main>
+      {% block content %}
+      {# Aquí se inyecta el contenido específico de cada página #}
+      {% endblock content %}
+    </main>
+
+    <footer>
+      {% block footer %}
+        {# Se muestra un footer personalizado si se ha definido, o uno por defecto #}
+        {% if settings.home.SiteBrandingSettings.footer_html %}
+          <div class="custom-footer">
+            {{ settings.home.SiteBrandingSettings.footer_html|safe }}
+          </div>
+        {% else %}
+          <p>&copy; 2025 Mi Sitio. Todos los derechos reservados.</p>
+        {% endif %}
+      {% endblock footer %}
+    </footer>
+  </body>
+</html>
